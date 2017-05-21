@@ -1,0 +1,20 @@
+{
+  "name": "gloryb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ioredis": "^3.0.0",
+    "koa": "^2.2.0",
+    "koa-better-router": "^2.1.1",
+    "koa-bodyparser": "^4.2.0",
+    "koa-json-error": "^3.1.2",
+    "koa-session2": "^2.2.4",
+    "mongoose": "^4.10.0"
+  }
+}
