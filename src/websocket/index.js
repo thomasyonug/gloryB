@@ -2,42 +2,47 @@ const Room           = require('./room')
 const Game           = require('./game')
 const RootController = require('./rootController')
 const log            = load('log')
+const classMeta      = require(load('config').path.decorators).classMeta
 
 
-module.exports = class {
-    constructor({app, server}){
-        this.io = require('socket.io')(server)
-        this.app = app
-        
+module.exports = 
+    @classMeta
+    class WebSocket{
+        constructor({app, server}){
+            this.io = require('socket.io')(server)
+            this.app = app
+            
 
 
 
 
-        //初始化对象和控制器
-        this.room = new Room({
-            io: this.io,
-            wsClass: this
-        })
-        this.game = new Game({
-            io: this.io,
-            wsClass: this
-        })
-        this.rootController = new RootController({
-            io: this.io,
-            room: this.room,
-            game: this.game,
-            wsClass: this
-        })
+            //初始化对象和控制器
+            this.room = new Room({
+                io: this.io,
+                wsClass: this
+            })
+            this.game = new Game({
+                io: this.io,
+                wsClass: this
+            })
+            this.rootController = new RootController({
+                io: this.io,
+                room: this.room,
+                game: this.game,
+                wsClass: this
+            })
+        }
+
+        init () {
+            this.io.on('connection', socket => {
+                this.rootController.connect(socket)
+
+                socket.on('room', msg => {
+                    this.rootController.roomController(msg)
+                })
+                socket.on('game', msg => {
+                    this.rootController.gameController(msg)
+                })
+            })
+        }
     }
-
-    init () {
-        // this.room.init()
-        // this.io.on('connection', socket => {
-        //     this.rootController.connect(socket)
-        // })
-
-
-
-        log('cyan' ,'[[    websocket ready  ]] ready')
-    }
-}
