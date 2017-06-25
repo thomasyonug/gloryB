@@ -1,5 +1,4 @@
-const decoratorsPath = load('config').path.decorators
-const classMeta = require(decoratorsPath).classMeta
+const classMeta = require(load('config').path.decorators).classMeta
 const RoomController = require('./roomController')
 const GameController = require('./gameController')
 
@@ -20,15 +19,15 @@ module.exports =
                 room, 
                 game, 
                 wsClass,
-                gameCtrler: new GameController(),
-                roomCtrler: new RoomController()
+                gameCtrler: new GameController({game}),
+                roomCtrler: new RoomController({room})
             })
         } 
 
 
 
         connect (socket) {
-            this.room.loginCustomer(socket)
+            this.room.login(socket)
         }
 
 
