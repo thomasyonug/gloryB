@@ -20,7 +20,7 @@ module.exports =
         }
 
 
-        login (socket) {
+        connect (socket) {
             this.outsideCore.join(socket)
         } 
 
@@ -38,8 +38,9 @@ module.exports =
         }
 
         quit (roomID, socket) {
-            this.roomCore.quit(roomID, socket)
-            this.outsideCore.join(socket)
+            this.roomCore.quit(roomID, socket).then(room => {
+                this.outsideCore.join(socket)
+            })
         }
 
     }
