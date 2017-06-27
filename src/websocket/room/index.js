@@ -23,6 +23,21 @@ module.exports =
         login (socket) {
             this.outsideCore.login(socket)
         } 
+
+        join (roomID, socket) {
+            console.log('join room')
+        }
+
+        create ({
+            roomName
+        }, socket) {
+            console.log('create room')
+        }
+
+        quit (roomID, socket) {
+            console.log('quit room')
+        }
+
     }
 
 
