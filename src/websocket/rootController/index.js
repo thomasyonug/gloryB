@@ -31,12 +31,12 @@ module.exports =
         }
 
 
-        roomController (msg) {
-            this.gameCtrler.on(msg)
+        roomController (msg, socket) {
+            this.roomCtrler.on(msg, socket)
         }
 
-        gameController (msg) {
-            this.roomCtrler.on(msg)
+        gameController (msg, socket) {
+            this.gameCtrler.on(msg, socket)
         }
 
         
