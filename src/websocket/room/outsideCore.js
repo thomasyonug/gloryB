@@ -12,7 +12,7 @@ module.exports =
         }
 
 
-        login (socket) {
+        join (socket) {
             const {
                 store
             } = this
@@ -21,21 +21,21 @@ module.exports =
                 id
             } = socket
 
-            if (store[id]) {
-                throw new Error(`this socket:${socket} already exist in outsideCore`)
-                return false
-            } else {
+            return new Promise((resolve, rej) => {
+                if (store[id]) { rej(`this socket:${socket} already exist in outsideCore`) }
                 try {
-                    store[id] = socket
-                    this.length ++
-                    return true
+                    socket.join('outside', () => {
+                        store[id] = socket
+                        this.length ++
+                        resolve(socket)
+                    })
                 } catch (err) {
-                    throw new Error(err)
+                    rej(err)
                 }
-            }
+            })
         }
 
-        logout (socket) {
+        quit (socket) {
             const {
                 store
             } = this
@@ -44,16 +44,19 @@ module.exports =
                 id
             } = socket
 
-            if (store[id]) {
+            return new Promise((resolve, rej) => {
+                if (!store[id]) { rej (`this socket:${socket} not found in outsideCore`) }
                 try {
-                    store[id] = null
-                    this.length ++
-                } catch (err) {
-                    throw new Error(err)
-                } 
-            } else {
-                throw new Error(`this socket:${socket} not found in outsideCore`)
-            }
+                    socket.leave('outside', () => {
+                        store[id] = null
+                        this.length --
+                        resolve(socket)
+                    })
+                } catch(err) {
+                    rej(err)
+                }
+            })
+
         }
 
 
