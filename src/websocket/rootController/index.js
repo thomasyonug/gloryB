@@ -27,7 +27,7 @@ module.exports =
 
 
         connect (socket) {
-            this.room.login(socket)
+            this.room.connect(socket)
         }
 
 
