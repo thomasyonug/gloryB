@@ -10,7 +10,7 @@ module.exports =
     class Room{
         io;
         rooomCore;
-        outsideCore
+        outsideCore;
         constructor({io}){
             Object.assign(this, {
                 io,
@@ -21,21 +21,25 @@ module.exports =
 
 
         login (socket) {
-            this.outsideCore.login(socket)
+            this.outsideCore.join(socket)
         } 
 
         join (roomID, socket) {
-            console.log('join room')
+            return this.roomCore.join(roomID, socket).then(room => {
+                this.outsideCore.quit(socket)
+                return room
+            })
         }
 
         create ({
             roomName
         }, socket) {
-            console.log('create room')
+            return this.roomCore.create({roomName}, socket)
         }
 
         quit (roomID, socket) {
-            console.log('quit room')
+            this.roomCore.quit(roomID, socket)
+            this.outsideCore.join(socket)
         }
 
     }
