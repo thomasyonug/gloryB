@@ -3,11 +3,18 @@ const Game           = require('./game')
 const RootController = require('./rootController')
 const log            = load('log')
 const classMeta      = require(load('config').path.decorators).classMeta
+const { ioMiddlewares, socketMiddlewares } = require('./middleware')
 
 
 module.exports = 
     @classMeta
     class WebSocket{
+        io;
+        app;
+        room;
+        game;
+        rootController;
+
         constructor({app, server}){
             this.io = require('socket.io')(server)
             this.app = app
@@ -34,14 +41,31 @@ module.exports =
         }
 
         init () {
-            this.io.on('connection', socket => {
-                this.rootController.connect(socket)
+            const {
+                io,
+                rootController
+            } = this
+
+            ioMiddlewares.forEach(ioMiddleware => {
+                io.use(ioMiddleware)
+            })
+            
+
+            
+
+            io.on('connection', socket => {
+                socketMiddlewares.forEach(socketMiddleware => {
+                    socket.use(socketMiddleware)
+                })
+
+
+                rootController.connect(socket)
 
                 socket.on('room', msg => {
-                    this.rootController.roomController(msg)
+                    rootController.roomController(msg, socket)
                 })
                 socket.on('game', msg => {
-                    this.rootController.gameController(msg)
+                    rootController.gameController(msg, socket)
                 })
             })
         }
