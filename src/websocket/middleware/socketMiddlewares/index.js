@@ -1,5 +1,9 @@
+const chalk = require('chalk')
+
+
 module.exports = [
-    function testMiddle () {
-        console.log(132, 'middleware')
+    function (packet, next) {
+        console.log(chalk.blue('receive ---'), packet)
+        return next()
     }
 ]
