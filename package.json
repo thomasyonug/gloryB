@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon ./src/index.js --exec babel-node",
     "build": "babel src -d dist && cp -r ./src/middleware ./dist",
-    "serve": "node dist/index.js"
+    "serve": "node dist/index.js",
+    "test": "mocha ./test"
   },
   "author": "article",
   "license": "ISC",
@@ -29,6 +30,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "chalk": "^1.1.3",
+    "mocha": "^3.4.2",
     "nodemon": "^1.11.0"
   }
 }
