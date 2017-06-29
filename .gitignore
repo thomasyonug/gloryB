@@ -2,3 +2,4 @@
 /dist
 /.vscode
 dump.rdb
+npm-debug.log
