@@ -10,7 +10,8 @@ module.exports =
         }
 
 
-        on ({type = null, content = null}, socket) {
+
+        on ({type = null, content = null} = {}, socket) {
             const handler = this[type]
             if (!handler) { 
                 throw new Error('room msg.type can\'t be empty')
