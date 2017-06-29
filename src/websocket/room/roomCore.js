@@ -14,9 +14,8 @@ module.exports =
         }
 
 
-        create ({roomName}, socket) {
+        create (content, socket) {
             return new Promise((resolve, rej) => {
-
                 const roomID = uuid()
                 try {
                     socket.join(roomID, () => {

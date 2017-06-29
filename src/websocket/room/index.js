@@ -1,8 +1,7 @@
-const RoomCore = require('./roomCore')
+const RoomCore    = require('./roomCore')
 const OutsideCore = require('./outsideCore')
-const classMeta = require(load('config').path.decorators).classMeta
-
-
+const classMeta   = require(load('config').path.decorators).classMeta
+const emitError   = load('error').emitError
 
 
 module.exports = 
@@ -31,10 +30,15 @@ module.exports =
             })
         }
 
-        create ({
-            roomName
-        }, socket) {
-            return this.roomCore.create({roomName}, socket)
+        create (content, socket) {
+            return this.roomCore.create(content, socket)
+                .then(room => {
+                    return this.outsideCore.quit(socket)
+                })
+                .then(socket => {
+                    console.log(socket.id)
+                })
+                .catch(emitError(socket))
         }
 
         quit (roomID, socket) {
