@@ -45,7 +45,7 @@ module.exports =
             } = socket
 
             return new Promise((resolve, rej) => {
-                if (!store[id]) { rej (`this socket:${socket} not found in outsideCore`) }
+                if (!store[id]) { rej (`this socket:${socket.id} not found in outsideCore`) }
                 try {
                     socket.leave('outside', () => {
                         store[id] = null
