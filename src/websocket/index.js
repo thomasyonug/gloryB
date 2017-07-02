@@ -58,7 +58,6 @@ module.exports =
                     socket.use(socketMiddleware)
                 })
 
-
                 rootController.connect(socket)
 
                 socket.on('room', msg => {
@@ -67,6 +66,7 @@ module.exports =
                 socket.on('game', msg => {
                     rootController.gameController(msg, socket)
                 })
+
             })
         }
     }

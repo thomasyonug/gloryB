@@ -8,8 +8,12 @@ module.exports = {
 
     emitError (socket) {
         return err => {
-            console.log(chalk.red('error ---'), err)
-            socket.$emit('server error', err)
+            const res = {
+                content: err,
+                type: 'err'
+            }
+            console.log(chalk.red('error ---'), res)
+            socket.$emit('err', res)
         }
     }
 }

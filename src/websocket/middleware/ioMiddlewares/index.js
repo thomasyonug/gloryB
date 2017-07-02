@@ -8,6 +8,11 @@ const $emit = function (...ev) {
 }
 
 module.exports = [
+    function connectInfo (socket, next) {
+        console.log(chalk.green('connect ---'), socket.id)
+        return next()
+    }
+    ,
     function socketDecorator (socket, next) {
         if (_emit === null) _emit = socket.emit
 
