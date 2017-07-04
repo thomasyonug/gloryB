@@ -8,9 +8,10 @@ router.post('/login', async (ctx, next) => {
     const match = await userLib.loginCheck(ctx.request.body)
     if ( match ) {
         ctx.body = {
-            errcode: 0
+            errcode: 0,
+            token: 'session'
         }
-        ctx.session = ctx.request.body
+        ctx.session = 'session'
     } else {
         try {
             ctx.throw(400, 'username or password not find')

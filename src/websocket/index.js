@@ -2,6 +2,7 @@ const Room           = require('./room')
 const Game           = require('./game')
 const RootController = require('./rootController')
 const log            = load('log')
+const emitError      = load('error').emitError
 const classMeta      = require(load('config').path.decorators).classMeta
 const { ioMiddlewares, socketMiddlewares } = require('./middleware')
 
@@ -58,6 +59,12 @@ module.exports =
                     socket.use(socketMiddleware)
                 })
 
+                if (socket.handshake.query.token !== 'session') {
+                    emitError(socket)('unauth')
+                    socket.disconnect()
+                    return
+                }
+
                 rootController.connect(socket)
 
                 socket.on('room', msg => {
@@ -69,4 +76,7 @@ module.exports =
 
             })
         }
+
+
+
     }
