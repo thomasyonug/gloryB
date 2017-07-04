@@ -8,7 +8,7 @@ module.exports =
     @classMeta
     class Room{
         io;
-        rooomCore;
+        roomCore;
         outsideCore;
         constructor({io}){
             Object.assign(this, {
@@ -45,6 +45,17 @@ module.exports =
             this.roomCore.quit(roomID, socket).then(room => {
                 this.outsideCore.join(socket)
             })
+        }
+
+        roomList (content, socket) {
+            const res = []
+            const rooms = this.roomCore.rooms
+
+            for (let key in rooms) {
+                res.push(rooms[key].serialize())
+            }
+            
+            return res
         }
 
     }

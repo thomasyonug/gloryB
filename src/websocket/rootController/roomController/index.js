@@ -22,8 +22,7 @@ module.exports =
         }
 
 
-        join (content, socket) {
-            
+        async join (content, socket) {
             const {
                 roomID
             } = content
@@ -50,4 +49,10 @@ module.exports =
         }
 
 
+        async roomList (content, socket) {
+            socket.$emit('room', {
+                type: 'roomList',
+                content: this.room.roomList() 
+            })
+        }
     }
