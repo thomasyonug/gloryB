@@ -19,7 +19,7 @@ module.exports =
                 const roomID = uuid()
                 try {
                     socket.join(roomID, () => {
-                        this.rooms[roomID] = new roomMeta({roomID, socket})
+                        this.rooms[roomID] = new roomMeta({roomID, socket, content})
                         this.length ++
                         resolve(this.rooms[roomID])
                     })

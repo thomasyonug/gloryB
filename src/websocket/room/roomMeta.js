@@ -3,12 +3,15 @@ module.exports = class roomMeta {
     roomName = null;
     host = null;
     guests = [];
-    constructor ({roomName, socket}) {
+    roomID = null;
+    constructor ({roomID, socket, content}) {
         Object.assign(this, {
-            roomName,
+            roomName: content.roomName,
             host: socket,
-            guests: []
+            guests: [],
+            roomID
         })
+        console.log(this.roomName)
     }
 
 
@@ -22,6 +25,14 @@ module.exports = class roomMeta {
             this.guests.splice(index, 1)
         } else if (this.host === socket) {
             this.host = null
+        }
+    }
+
+    serialize () {
+        return {
+            ...this,
+            host: this.host.id,
+            guests: this.guests.map(guest => guest.socket.id)
         }
     }
 

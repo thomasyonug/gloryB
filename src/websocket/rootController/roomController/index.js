@@ -23,6 +23,7 @@ module.exports =
 
 
         join (content, socket) {
+            
             const {
                 roomID
             } = content
@@ -31,8 +32,13 @@ module.exports =
         }
 
 
-        create (content, socket) {
-            this.room.create(content, socket)
+        async create (content, socket) {
+            const {room} = await this.room.create(content, socket)
+
+            socket.$emit('room', {
+                type: 'joinRoom',
+                content: room.serialize()
+            })
         }
 
         quit (content, socket) {

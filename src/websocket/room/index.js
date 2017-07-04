@@ -33,10 +33,10 @@ module.exports =
         create (content, socket) {
             return this.roomCore.create(content, socket)
                 .then(room => {
-                    return this.outsideCore.quit(socket)
-                })
-                .then(socket => {
-                    console.log(socket.id)
+                    return {
+                        socket: this.outsideCore.quit(socket),
+                        room
+                    }
                 })
                 .catch(emitError(socket))
         }
