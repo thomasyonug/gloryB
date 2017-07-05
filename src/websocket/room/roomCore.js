@@ -1,14 +1,13 @@
 const uuid      = require('uuid/v4')
 const classMeta = require(load('config').path.decorators).classMeta
-const roomMeta  = require('./roomMeta')
+const RoomMeta  = require('./roomMeta')
 
 
 module.exports = 
     @classMeta
     class RoomCore {
+        rooms = new Map();
 
-        rooms = {};
-        length = 0;
         constructor () {
             
         }
@@ -19,10 +18,10 @@ module.exports =
                 const roomID = uuid()
                 try {
                     socket.join(roomID, () => {
-                        this.rooms[roomID] = new roomMeta({roomID, socket, content})
-                        socket.glory.room = this.rooms[roomID]
-                        this.length ++
-                        resolve(this.rooms[roomID])
+                        const roomMeta = new RoomMeta({roomID, socket, content})
+                        this.rooms.set(roomID, roomMeta)
+                        socket.glory.room = roomMeta
+                        resolve(roomMeta)
                     })
                 } catch (err) {
                     rej(err)
@@ -35,9 +34,10 @@ module.exports =
             return new Promise((resolve, rej) => {
                 try {
                     socket.join(roomID, () => {
-                        this.rooms[roomID].addGuest(socket)
-                        socket.glory.room = this.rooms[roomID]
-                        resolve(this.rooms[roomID])
+                        const room = this.rooms.get(roomID)
+                        room.addGuest(socket)
+                        socket.glory.room = room
+                        resolve(room)
                     })
                 } catch (err) {
                     rej(err)
@@ -52,10 +52,11 @@ module.exports =
             return new Promise((resolve, rej) => {
                 try {
                     socket.leave(roomID, () => {
-                        this.rooms[roomID].delGuest(socket)
+                        const room = this.rooms.get(roomID)
+                        room.delGuest(socket)
                         socket.glory.room = null
-                        this.rooms[roomID].shouldDestory() && this.destory(roomID)
-                        resolve(this.rooms[roomID])
+                        room.shouldDestory() && this.destory(roomID)
+                        resolve(room)
                     })
                 } catch (err) {
                     rej(err)
@@ -64,9 +65,11 @@ module.exports =
         }
 
         destory (roomID) {
-            this.rooms[roomID] = null
-            this.length --
+            this.rooms.delete(roomID)
         }
 
+        size () {
+            return this.rooms.size
+        }
 
     }

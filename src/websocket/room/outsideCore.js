@@ -6,8 +6,7 @@ module.exports =
     @classMeta
     class OutsideCore {
 
-        store = {};
-        length = 0;
+        store = new Map();
         constructor(){
         }
 
@@ -22,12 +21,11 @@ module.exports =
             } = socket
 
             return new Promise((resolve, rej) => {
-                if (store[id]) { rej(`this socket:${socket} already exist in outsideCore`) }
+                if (store.has(id)) { rej(`this socket:${socket} already exist in outsideCore`) }
                 try {
                     socket.join('outside', () => {
-                        store[id] = socket
+                        store.set(id, socket)
                         socket.glory.room = 'outside'
-                        this.length ++
                         resolve(socket)
                     })
                 } catch (err) {
@@ -46,12 +44,11 @@ module.exports =
             } = socket
 
             return new Promise((resolve, rej) => {
-                if (!store[id]) { rej (`this socket:${socket.id} not found in outsideCore`) }
+                if (!store.has(id)) { rej (`this socket:${socket.id} not found in outsideCore`) }
                 try {
                     socket.leave('outside', () => {
-                        store[id] = null
+                        store.delete(id)
                         socket.glory.room = null
-                        this.length --
                         resolve(socket)
                     })
                 } catch(err) {
@@ -61,7 +58,9 @@ module.exports =
 
         }
 
-
+        size () {
+            return this.store.size
+        }
 
 
     }
