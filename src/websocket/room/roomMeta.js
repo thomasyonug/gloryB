@@ -37,7 +37,7 @@ module.exports = class roomMeta {
 
 
     shouldDestory () {
-        if (this.host === null && this.guests.length === 0) { return true }
+        if (this.host === null && this.guests.size === 0) { return true }
         else { return false }
     }
 }

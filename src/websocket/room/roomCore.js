@@ -53,9 +53,13 @@ module.exports =
                 try {
                     socket.leave(roomID, () => {
                         const room = this.rooms.get(roomID)
-                        room.delGuest(socket)
-                        socket.glory.room = null
+                        if (room.host === socket) {
+                            room.host = room.guests.size ? (room.delGuest(room.host), Array.from(room.guests)[0]) : null
+                        } else {
+                            room.delGuest(socket)
+                        }
                         room.shouldDestory() && this.destory(roomID)
+                        socket.glory.room = null
                         resolve(room)
                     })
                 } catch (err) {
