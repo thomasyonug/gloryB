@@ -1,6 +1,7 @@
 const classMeta = require(load('config').path.decorators).classMeta
 const RoomController = require('./roomController')
 const GameController = require('./gameController')
+const MetaController = require('./MetaController')
 
 
 module.exports = 
@@ -20,7 +21,8 @@ module.exports =
                 game, 
                 wsClass,
                 gameCtrler: new GameController({game}),
-                roomCtrler: new RoomController({room})
+                roomCtrler: new RoomController({room}),
+                metaCtrler: new MetaController({room, game, io})
             })
         } 
 
@@ -40,6 +42,8 @@ module.exports =
             this.gameCtrler.on(msg, socket)
         }
 
-        
+        metaController (msg, socket) {
+            this.metaCtrler.on(msg, socket)
+        } 
 
     }

@@ -31,8 +31,8 @@ module.exports = class roomMeta {
     serialize () {
         return {
             ...this,
-            host: this.host.id,
-            guests: this.guests.map(guest => guest.socket.id)
+            host: this.host && this.host.id,
+            guests: this.guests.map(guest => guest.id)
         }
     }
 

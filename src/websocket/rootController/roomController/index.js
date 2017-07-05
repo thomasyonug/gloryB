@@ -1,33 +1,42 @@
 const classMeta = require(load('config').path.decorators).classMeta
-
+const Entity    = require('../entity')
 module.exports = 
     @classMeta
-    class RoomController {
+    class RoomController extends Entity{
         room;
 
         constructor ({room}) {
+            super()
             this.room = room
         }
 
 
 
-        on ({type = null, content = null} = {}, socket) {
-            const handler = this[type]
-            if (!handler) { 
-                throw new Error('room msg.type can\'t be empty')
-                return false
-            } else {
-                handler.call(this, content, socket)
-            }
-        }
+        // on ({type = null, content = null} = {}, socket) {
+        //     const handler = this[type]
+        //     if (!handler) { 
+        //         throw new Error('room msg.type can\'t be empty')
+        //         return false
+        //     } else {
+        //         handler.call(this, content, socket)
+        //     }
+        // }
 
 
         async join (content, socket) {
             const {
                 roomID
             } = content
-
-            this.room.join(roomID, socket)
+            try {
+                const room = await this.room.join(roomID, socket)
+                
+                socket.to(roomID).$emit('room', {
+                    type: 'joinRoom',
+                    content: room.serialize()
+                })
+            } catch(err) {
+                console.log(err)
+            }
         }
 
 

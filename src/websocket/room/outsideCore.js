@@ -26,6 +26,7 @@ module.exports =
                 try {
                     socket.join('outside', () => {
                         store[id] = socket
+                        socket.glory.room = 'outside'
                         this.length ++
                         resolve(socket)
                     })
@@ -49,6 +50,7 @@ module.exports =
                 try {
                     socket.leave('outside', () => {
                         store[id] = null
+                        socket.glory.room = null
                         this.length --
                         resolve(socket)
                     })

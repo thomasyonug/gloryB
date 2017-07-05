@@ -24,28 +24,30 @@ module.exports =
         } 
 
         join (roomID, socket) {
-            return this.roomCore.join(roomID, socket).then(room => {
-                this.outsideCore.quit(socket)
-                return room
+            return this.outsideCore.quit(socket).then(() => {
+                return this.roomCore.join(roomID, socket)
             })
         }
 
-        create (content, socket) {
-            return this.roomCore.create(content, socket)
-                .then(room => {
-                    return {
-                        socket: this.outsideCore.quit(socket),
-                        room
-                    }
-                })
-                .catch(emitError(socket))
+        async create (content, socket) {
+            try {
+                await this.outsideCore.quit(socket)
+                const room = await this.roomCore.create(content, socket)
+                return {
+                    room,
+                    socket
+                }
+            } catch (err) {
+                emitError(socket)(err)
+            }
         }
 
         quit (roomID, socket) {
-            this.roomCore.quit(roomID, socket).then(room => {
-                this.outsideCore.join(socket)
+            return this.roomCore.quit(roomID, socket).then(room => {
+                return this.outsideCore.join(socket)
             })
         }
+
 
         roomList (content, socket) {
             const res = []

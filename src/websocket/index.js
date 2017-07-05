@@ -70,9 +70,21 @@ module.exports =
                 socket.on('room', msg => {
                     rootController.roomController(msg, socket)
                 })
+
                 socket.on('game', msg => {
                     rootController.gameController(msg, socket)
                 })
+
+
+
+                socket.on('disconnect', reason => {
+                    rootController.metaController({
+                        type: 'disconnect',
+                        content: reason
+                    }, socket)
+                })
+
+
 
             })
         }

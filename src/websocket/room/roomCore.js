@@ -20,6 +20,7 @@ module.exports =
                 try {
                     socket.join(roomID, () => {
                         this.rooms[roomID] = new roomMeta({roomID, socket, content})
+                        socket.glory.room = this.rooms[roomID]
                         this.length ++
                         resolve(this.rooms[roomID])
                     })
@@ -35,6 +36,7 @@ module.exports =
                 try {
                     socket.join(roomID, () => {
                         this.rooms[roomID].addGuest(socket)
+                        socket.glory.room = this.rooms[roomID]
                         resolve(this.rooms[roomID])
                     })
                 } catch (err) {
@@ -51,9 +53,8 @@ module.exports =
                 try {
                     socket.leave(roomID, () => {
                         this.rooms[roomID].delGuest(socket)
-                        
+                        socket.glory.room = null
                         this.rooms[roomID].shouldDestory() && this.destory(roomID)
-
                         resolve(this.rooms[roomID])
                     })
                 } catch (err) {
