@@ -1,7 +1,7 @@
 const classMeta = require(load('config').path.decorators).classMeta
 const RoomController = require('./roomController')
 const GameController = require('./gameController')
-const MetaController = require('./MetaController')
+const MetaController = require('./metaController')
 
 
 module.exports = 
