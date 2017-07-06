@@ -20,8 +20,8 @@ module.exports =
                 room, 
                 game, 
                 wsClass,
-                gameCtrler: new GameController({game}),
-                roomCtrler: new RoomController({room}),
+                gameCtrler: new GameController({game, io}),
+                roomCtrler: new RoomController({room, io}),
                 metaCtrler: new MetaController({room, game, io})
             })
         } 

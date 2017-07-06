@@ -5,7 +5,7 @@ module.exports =
     @classMeta
     class GameController extends Entity{
         game;
-
+        io;
 
         constructor ({game}) {
             super()

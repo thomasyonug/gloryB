@@ -4,10 +4,15 @@ module.exports =
     @classMeta
     class RoomController extends Entity{
         room;
+        io;
 
-        constructor ({room}) {
+        constructor ({room, io}) {
             super()
-            this.room = room
+            Object.assign(this, {
+                room,
+                io
+            })
+            this.roomChangeHandle(room.roomCore)
         }
 
         async join (content, socket) {
@@ -16,10 +21,6 @@ module.exports =
             } = content
             try {
                 const room = await this.room.join(roomID, socket)
-                socket.to(room.roomID).$emit('room', {
-                    type: 'roomInfo',
-                    content: socket.glory.room.serialize()
-                })
             } catch(err) {
                 console.log(err)
             }
@@ -51,5 +52,19 @@ module.exports =
                 type: 'roomInfo',
                 content: socket.glory.room.serialize()
             })
+        }
+
+
+
+        roomChangeHandle (roomCore) {
+            const handle = room => {
+                this.io.to(room.roomID).emit('room', {
+                    type: 'roomInfo',
+                    content: room.serialize()
+                })
+            }
+
+            roomCore.on('join', handle)
+            roomCore.on('quit', handle)
         }
     }

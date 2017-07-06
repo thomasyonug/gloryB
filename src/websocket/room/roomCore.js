@@ -1,15 +1,15 @@
-const uuid      = require('uuid/v4')
-const classMeta = require(load('config').path.decorators).classMeta
-const RoomMeta  = require('./roomMeta')
-
+const uuid          = require('uuid/v4')
+const classMeta     = require(load('config').path.decorators).classMeta
+const RoomMeta      = require('./roomMeta')
+const EventsEmitter = require('events')
 
 module.exports = 
     @classMeta
-    class RoomCore {
+    class RoomCore extends EventsEmitter{
         rooms = new Map();
 
         constructor () {
-            
+            super()
         }
 
 
@@ -37,6 +37,8 @@ module.exports =
                         const room = this.rooms.get(roomID)
                         room.addGuest(socket)
                         socket.glory.room = room
+                        //抛出事件
+                        this.trigger('join', room)
                         resolve(room)
                     })
                 } catch (err) {
@@ -58,6 +60,8 @@ module.exports =
                         } else {
                             room.delGuest(socket)
                         }
+                        //抛出事件
+                        this.trigger('quit', room)
                         room.shouldDestory() && this.destory(roomID)
                         socket.glory.room = null
                         resolve(room)
@@ -81,4 +85,7 @@ module.exports =
             return this.rooms.size
         }
 
+        trigger (eventName, content) {
+            this.emit(eventName, content)
+        }
     }
