@@ -56,7 +56,8 @@ module.exports =
                     socket.leave(roomID, () => {
                         const room = this.rooms.get(roomID)
                         if (room.host === socket) {
-                            room.host = room.guests.size ? (room.delGuest(room.host), Array.from(room.guests)[0]) : null
+                            const newHost = Array.from(room.guests)[0]
+                            room.host = room.guests.size ? (room.delGuest(newHost), newHost) : null
                         } else {
                             room.delGuest(socket)
                         }
