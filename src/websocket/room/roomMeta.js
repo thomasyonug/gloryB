@@ -18,20 +18,14 @@ module.exports = class roomMeta {
     }
     
     delGuest (socket) {
-        // const index = this.guests.indexOf(socket)
-        // if (index > -1) {
-        //     this.guests.splice(index, 1)
-        // } else if (this.host === socket) {
-        //     this.host = null
-        // }
         this.guests.delete(socket)
     }
 
     serialize () {
         return {
             ...this,
-            host: this.host && this.host.id,
-            guests: Array.from(this.guests).map(guest => guest.id)
+            host: this.host && this.host.glory.userInfo.nickname,
+            guests: Array.from(this.guests).map(guest => guest.glory.userInfo.nickname)
         }
     }
 

@@ -1,6 +1,7 @@
 const Room           = require('./room')
 const Game           = require('./game')
 const RootController = require('./rootController')
+const jwt            = require('jsonwebtoken')
 const log            = load('log')
 const emitError      = load('error').emitError
 const classMeta      = require(load('config').path.decorators).classMeta
@@ -54,12 +55,12 @@ module.exports =
 
             
 
-            io.on('connection', socket => {
+            io.on('connection', async socket => {
                 socketMiddlewares.forEach(socketMiddleware => {
                     socket.use(socketMiddleware)
                 })
 
-                if (socket.handshake.query.token !== 'session') {
+                if (await !this._loginCheck(socket)) {
                     emitError(socket)('unauth')
                     socket.disconnect()
                     return
@@ -89,6 +90,17 @@ module.exports =
             })
         }
 
+
+
+        async _loginCheck (socket) {
+            socket.glory.userInfo = await new Promise((resolve, rej) => {
+                jwt.verify(socket.handshake.query.token, 'fuck u', (err, decode) => {
+                    if (err) resolve(false)
+                    resolve(decode)
+                })
+            })
+            return socket.glory.userInfo
+        }
 
 
     }
