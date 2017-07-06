@@ -23,6 +23,7 @@ module.exports = class MetaController extends Entity{
             try {
                 await this.room.quit(socket.glory.room.roomID, socket)
                 return this.room.outsideCore.quit(socket).then(() => {
+                    this.room.allSocketStore.delete(socket.glory.userInfo.username)
                     // console.log('roomCore', this.room.roomCore.size())
                     // console.log('outsideCore', this.room.outsideCore.size())
                 })
@@ -31,12 +32,18 @@ module.exports = class MetaController extends Entity{
             }
         } else {
             return this.room.outsideCore.quit(socket).then(() => {
+                this.room.allSocketStore.delete(socket.glory.userInfo.username)
                 // console.log('roomCore', this.room.roomCore.size())
                 // console.log('outsideCore', this.room.outsideCore.size())
             })
         }
+    }
 
 
+    async connectSuccess (msg, socket) {
+        socket.$emit('meta', {
+            type: 'connectSuccess'
+        })
     }
 
 }

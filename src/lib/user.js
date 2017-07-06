@@ -8,7 +8,7 @@ async function loginCheck (user) {
 
 
 async function queryInfo (user) {
-    return userModel.findOne(user).exec()    
+    return userModel.findOne(user).exec()
 }
 
 

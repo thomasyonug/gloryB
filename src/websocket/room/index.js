@@ -10,17 +10,21 @@ module.exports =
         io;
         roomCore;
         outsideCore;
+        allSocketStore;
+
         constructor({io}){
             Object.assign(this, {
                 io,
                 roomCore: new RoomCore(),
-                outsideCore: new OutsideCore()
+                outsideCore: new OutsideCore(),
+                allSocketStore: new Map()
             })
         }
 
 
         connect (socket) {
             this.outsideCore.join(socket)
+            this.allSocketStore.set(socket.glory.userInfo.username, socket)
         } 
 
         join (roomID, socket) {

@@ -20,10 +20,6 @@ module.exports =
         constructor({app, server}){
             this.io = require('socket.io')(server)
             this.app = app
-            
-
-
-
 
             //初始化对象和控制器
             this.room = new Room({
@@ -60,7 +56,7 @@ module.exports =
                     socket.use(socketMiddleware)
                 })
 
-                if (await !this._loginCheck(socket)) {
+                if (!(await this._loginCheck(socket))) {
                     emitError(socket)('unauth')
                     socket.disconnect()
                     return
@@ -76,17 +72,12 @@ module.exports =
                     rootController.gameController(msg, socket)
                 })
 
-
-
                 socket.on('disconnect', reason => {
                     rootController.metaController({
                         type: 'disconnect',
                         content: reason
                     }, socket)
                 })
-
-
-
             })
         }
 
@@ -95,12 +86,21 @@ module.exports =
         async _loginCheck (socket) {
             socket.glory.userInfo = await new Promise((resolve, rej) => {
                 jwt.verify(socket.handshake.query.token, 'fuck u', (err, decode) => {
-                    if (err) resolve(false)
-                    resolve(decode)
+                    console.log(decode)
+                    if (!decode || err || this.room.allSocketStore.has(decode.username)) {
+                        //验证不通过
+                        resolve(false)
+                        return 0
+                    } else {
+                        //验证通过
+                        this.rootController.metaController({
+                            type: 'connectSuccess'
+                        }, socket)
+                        resolve(decode)
+                        return 0
+                    }
                 })
             })
             return socket.glory.userInfo
         }
-
-
     }
