@@ -10,29 +10,15 @@ module.exports =
             this.room = room
         }
 
-
-
-        // on ({type = null, content = null} = {}, socket) {
-        //     const handler = this[type]
-        //     if (!handler) { 
-        //         throw new Error('room msg.type can\'t be empty')
-        //         return false
-        //     } else {
-        //         handler.call(this, content, socket)
-        //     }
-        // }
-
-
         async join (content, socket) {
             const {
                 roomID
             } = content
             try {
                 const room = await this.room.join(roomID, socket)
-                
-                socket.to(roomID).$emit('room', {
-                    type: 'joinRoom',
-                    content: room.serialize()
+                socket.to(room.roomID).$emit('room', {
+                    type: 'roomInfo',
+                    content: socket.glory.room.serialize()
                 })
             } catch(err) {
                 console.log(err)
@@ -42,11 +28,6 @@ module.exports =
 
         async create (content, socket) {
             const {room} = await this.room.create(content, socket)
-
-            socket.$emit('room', {
-                type: 'joinRoom',
-                content: room.serialize()
-            })
         }
 
         quit (content, socket) {
@@ -62,6 +43,13 @@ module.exports =
             socket.$emit('room', {
                 type: 'roomList',
                 content: this.room.roomList() 
+            })
+        }
+
+        roomInfo (content, socket) {
+            socket.$emit('room', {
+                type: 'roomInfo',
+                content: socket.glory.room.serialize()
             })
         }
     }

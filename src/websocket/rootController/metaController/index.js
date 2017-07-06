@@ -23,16 +23,16 @@ module.exports = class MetaController extends Entity{
             try {
                 await this.room.quit(socket.glory.room.roomID, socket)
                 return this.room.outsideCore.quit(socket).then(() => {
-                    console.log('roomCore', this.room.roomCore.size())
-                    console.log('outsideCore', this.room.outsideCore.size())
+                    // console.log('roomCore', this.room.roomCore.size())
+                    // console.log('outsideCore', this.room.outsideCore.size())
                 })
             } catch (err) {
                 emitError(socket)(err)
             }
         } else {
             return this.room.outsideCore.quit(socket).then(() => {
-                console.log('roomCore', this.room.roomCore.size())
-                console.log('outsideCore', this.room.outsideCore.size())
+                // console.log('roomCore', this.room.roomCore.size())
+                // console.log('outsideCore', this.room.outsideCore.size())
             })
         }
 

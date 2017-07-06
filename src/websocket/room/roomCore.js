@@ -68,6 +68,11 @@ module.exports =
             })
         }
 
+        query (roomID) {
+            return this.rooms.get(roomID)
+        }
+
+
         destory (roomID) {
             this.rooms.delete(roomID)
         }

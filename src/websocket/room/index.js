@@ -48,13 +48,16 @@ module.exports =
             })
         }
 
+        queryRoomByID (roomID) {
+            return this.roomCore.query(roomID)
+        }
 
         roomList (content, socket) {
             const res = []
             const rooms = this.roomCore.rooms
 
-            for (let key in rooms) {
-                res.push(rooms[key].serialize())
+            for (let [key,value] of rooms) {
+                res.push(value.serialize())
             }
             
             return res
