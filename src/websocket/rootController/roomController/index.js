@@ -31,12 +31,17 @@ module.exports =
             const {room} = await this.room.create(content, socket)
         }
 
-        quit (content, socket) {
+        async quit (content, socket) {
             const {
                 roomID
             } = content
 
-            this.room.quit(roomID, socket)
+            await this.room.quit(roomID, socket)
+
+            socket.$emit('meta', {
+                type: 'quitRoomSuccess'
+            })
+
         }
 
 
