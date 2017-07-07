@@ -72,6 +72,10 @@ module.exports =
                     rootController.gameController(msg, socket)
                 })
 
+                socket.on('chat', msg => {
+                    rootController.chatController(msg, socket)
+                })
+
                 socket.on('disconnect', reason => {
                     rootController.metaController({
                         type: 'disconnect',

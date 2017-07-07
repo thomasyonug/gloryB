@@ -25,7 +25,7 @@ module.exports =
         connect (socket) {
             this.outsideCore.join(socket)
             this.allSocketStore.set(socket.glory.userInfo.username, socket)
-        } 
+        }
 
         join (roomID, socket) {
             return this.outsideCore.quit(socket).then(() => {
