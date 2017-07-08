@@ -7,8 +7,25 @@ module.exports =
         game;
         io;
 
-        constructor ({game}) {
+        constructor ({game, io}) {
             super()
+            Object.assign(this, {
+                game,
+                io
+            })
+        }
+
+        start (msg, socket) {
+            const {
+                room,
+                userInfo
+            } = socket.glory
+            
+            if (room.host !== socket) return
+
+            this.io.to(room.roomID).emit('game', {
+                type: 'start'
+            })
         }
 
 
