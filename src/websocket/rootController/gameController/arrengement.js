@@ -20,6 +20,9 @@ async function arrengement_getCardGroups (msg, socket) {
         content: userInfo.arrengement.cardGroups
     })
 }
+
+
+
 module.exports = {
     arrengement_addCardGroup,
     arrengement_getCardGroups
