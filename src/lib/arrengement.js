@@ -34,6 +34,17 @@ async function updateCardGroup (group) {
     })
 }
 
+async function deleteCardGroup (query) {
+    const {
+        _id,
+        username
+    } = query
+
+    const user = await userModel.findOne({username}).exec()
+    user.arrengement.cardGroups.pull({_id})
+    return user.save()
+}
+
 async function findCardGroup (query) {
     return userModel.findOne(query).exec()
 }
@@ -43,7 +54,8 @@ async function findCardGroup (query) {
 module.exports = {
     addCardGroup,
     updateCardGroup,
-    findCardGroup
+    findCardGroup,
+    deleteCardGroup
 }
 
 
