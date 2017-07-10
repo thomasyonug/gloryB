@@ -1,5 +1,5 @@
-const config           = load('config')
-const arrengementLib   = require(config.path.lib).arrengementLib
+// const config           = load('config')
+const arrengementLib   = require('../../../lib').arrengementLib
 
 async function arrengement_addCardGroup ({groupName}, socket) {
     await arrengementLib.addCardGroup({username: socket.glory.userInfo.username}, groupName)
