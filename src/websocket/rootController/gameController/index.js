@@ -1,5 +1,7 @@
-const classMeta = require(load('config').path.decorators).classMeta
+const config    = load('config')
+const classMeta = require(config.path.decorators).classMeta
 const Entity    = require('../entity')
+const arrengement = require('./arrengement')
 
 module.exports = 
     @classMeta
@@ -11,7 +13,8 @@ module.exports =
             super()
             Object.assign(this, {
                 game,
-                io
+                io,
+                ...arrengement
             })
         }
 
@@ -20,13 +23,23 @@ module.exports =
                 room,
                 userInfo
             } = socket.glory
-            
+
             if (room.host !== socket) return
 
             this.io.to(room.roomID).emit('game', {
                 type: 'start'
             })
         }
+
+
+
+
+        transfer (msg, socket) {
+            const {
+                room
+            } = socket.glory
+        }
+
 
 
     }

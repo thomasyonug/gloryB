@@ -10,8 +10,6 @@ async function loginCheck (user) {
 async function queryInfo (user) {
     return userModel.findOne(user).exec()
 }
-
-
 module.exports = {
     loginCheck,
     queryInfo
