@@ -34,11 +34,16 @@ async function updateCardGroup (group) {
     })
 }
 
+async function findCardGroup (query) {
+    return userModel.findOne(query).exec()
+}
+
 
 
 module.exports = {
     addCardGroup,
-    updateCardGroup
+    updateCardGroup,
+    findCardGroup
 }
 
 
