@@ -16,22 +16,16 @@ async function addCardGroup (query, groupName) {
         ).exec()
 }
 
-async function updateCardGroup (group) {
-    return new Promise((resolve, rej) => {
-        const {
-            groupName,
-            cards
-        } = group
-
-        if (!groupName || !cards) {
-            rej(new Error('groupName or cards not found in updateCardGroup'))
-            return
+async function updateCardGroup ({username}, cardGroup) {
+    return userModel.update(
+        {username, 'arrengement.cardGroups.groupName': cardGroup.groupName}, 
+        {
+            $set: {
+                'arrengement.cardGroups.$.cards': cardGroup.cards
         }
-        userModel.update(group, {upsert: true}, (err, raw) => {
-            if (err) rej(err)
-            resolve(raw)
-        })
-    })
+    }).exec()
+
+
 }
 
 async function deleteCardGroup (query) {

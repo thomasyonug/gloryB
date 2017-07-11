@@ -27,10 +27,16 @@ async function arrengement_deleteCardGroup ({_id}, socket) {
     arrengement_getCardGroups(null, socket)
 }
 
+async function arrengement_updateCardGroup (msg, socket) {
+    await arrengementLib.updateCardGroup({username: socket.glory.userInfo.username}, msg)
+
+    arrengement_getCardGroups(null, socket)
+}
 
 
 module.exports = {
     arrengement_addCardGroup,
     arrengement_getCardGroups,
-    arrengement_deleteCardGroup
+    arrengement_deleteCardGroup,
+    arrengement_updateCardGroup
 }
