@@ -29,5 +29,5 @@ class RedisStore extends Store {
 }
 
 module.exports = session({
-    store: new RedisStore()
+    // store: new RedisStore()
 })

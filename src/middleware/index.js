@@ -6,6 +6,6 @@ const loginFilterMiddleware = require('./loginFilter')
 module.exports = [
     errorMiddleware,
     parserMiddleware,
-    sessionMiddleware,
+    // sessionMiddleware,
     loginFilterMiddleware
 ]
