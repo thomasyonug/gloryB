@@ -1,5 +1,6 @@
 const classMeta = require(load('config').path.decorators).classMeta
 const Entity    = require('../entity')
+const emitError = load('error').emitError
 module.exports = 
     @classMeta
     class RoomController extends Entity{
@@ -46,27 +47,42 @@ module.exports =
 
 
         async roomList (content, socket) {
-            socket.$emit('room', {
-                type: 'roomList',
-                content: this.room.roomList() 
-            })
+            try {
+                socket.$emit('room', {
+                    type: 'roomList',
+                    content: this.room.roomList() 
+                })
+            } catch (err) {
+                emitError(socket)(err)
+            }
         }
 
         roomInfo (content, socket) {
-            socket.$emit('room', {
-                type: 'roomInfo',
-                content: socket.glory.room.serialize()
-            })
+            try {
+                socket.$emit('room', {
+                    type: 'roomInfo',
+                    content: socket.glory.room.serialize()
+                })
+            } catch (err) {
+                emitError(socket)(err)
+            }
         }
 
 
 
         roomChangeHandle (roomCore) {
             const handle = room => {
-                this.io.to(room.roomID).emit('room', {
-                    type: 'roomInfo',
-                    content: room.serialize()
-                })
+                try {
+                    this.io.to(room.roomID).emit('room', {
+                        type: 'roomInfo',
+                        content: room.serialize()
+                    })
+                } catch (err) {
+                    this.io.to(room.roomID).emit('err', {
+                        type: 'err',
+                        content: err
+                    })
+                }
             }
 
             roomCore.on('join', handle)
