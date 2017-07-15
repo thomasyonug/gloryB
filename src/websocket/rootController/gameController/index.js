@@ -1,8 +1,9 @@
 const config    = load('config')
 const classMeta = require(config.path.decorators).classMeta
 const Entity    = require('../entity')
-const arrengement = require('./arrengement')
 
+const arrengement = require('./arrengement')
+const glory       = require('./glory')
 module.exports = 
     @classMeta
     class GameController extends Entity{
@@ -14,7 +15,8 @@ module.exports =
             Object.assign(this, {
                 game,
                 io,
-                ...arrengement
+                ...arrengement,
+                ...glory
             })
         }
 
@@ -24,11 +26,16 @@ module.exports =
                 userInfo
             } = socket.glory
 
-            if (room.host !== socket) return
+            if ((room.host !== socket) || !room.guests.size) return
 
+
+            //通知各方页面跳转
             this.io.to(room.roomID).emit('game', {
                 type: 'start'
             })
+
+            this.glory_initStoreCards(msg, socket)
+
         }
 
 
