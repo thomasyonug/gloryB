@@ -2,7 +2,7 @@ const arrengementLib   = require('../../../lib').arrengementLib
 
 
 
-async function glory_initStoreCards (msg, socket) {
+async function _initStoreCards (msg, socket) {
     //传送各方卡组
     const {
         room,
@@ -17,28 +17,104 @@ async function glory_initStoreCards (msg, socket) {
         arrengementLib.findCardGroup({username: guest.glory.userInfo.username})
     ])
 
-    const content = {
+    return {
         hostCards: results[0].arrengement.cardGroups[0].cards,
         guestCards: results[1].arrengement.cardGroups[0].cards
     }
+    // hostSocket.$emit('game', {
+    //     type: 'glory_initStoreCards',
+    //     content: {
+    //         ...content,
+    //         role: 'host'
+    //     }
+    // })
+
+    // guest.$emit('game', {
+    //     type: 'glory_initStoreCards',
+    //     content: {
+    //         ...content,
+    //         role: 'guest'
+    //     }
+    // })
+}
+
+async function _initGod (msg, socket) {
+    const {
+        room,
+        userInfo
+    } = socket.glory
+
+    const hostSocket = room.host
+    const guest      = room.guests.get(0)
+
+    return {
+        host: {
+            index: 'first'
+        },
+        guest: {
+            index: 'second'
+        }
+    }
+}
+
+async function glory_initAll (msg, socket) {
+    const [
+        cardsContent,
+        godContent
+    ] = await Promise.all([
+        _initStoreCards(msg, socket),
+        _initGod(msg, socket)
+    ])
+
+    const {
+        room,
+        userInfo
+    } = socket.glory
+
+    const hostSocket  = room.host
+    const guestSocket = room.guests.get(0)
+
+    
+
     hostSocket.$emit('game', {
-        type: 'glory_initStoreCards',
+        type: 'glory_initAll',
         content: {
-            ...content,
-            role: 'host'
+            initStoreContent: {
+                content: {
+                    storeCards: cardsContent.hostCards,
+                    e_storeCards: cardsContent.guestCards
+                }
+            },
+            initGodContent: {
+                content: {
+                    index: 'first'
+                }
+            }
         }
     })
 
-    guest.$emit('game', {
-        type: 'glory_initStoreCards',
+    guestSocket.$emit('game', {
+        type: 'glory_initAll',
         content: {
-            ...content,
-            role: 'guest'
+            initStoreContent: {
+                content: {
+                    e_storeCards: cardsContent.hostCards,
+                    storeCards: cardsContent.guestCards
+                }
+            },
+            initGodContent: {
+                content: {
+                    index: 'second'
+                }
+            }
         }
     })
+
 }
 
 
+
+
 module.exports = {
-    glory_initStoreCards
+    glory_initAll
 }

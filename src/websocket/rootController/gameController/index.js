@@ -34,7 +34,7 @@ module.exports =
                 type: 'start'
             })
 
-            this.glory_initStoreCards(msg, socket)
+            this.glory_initAll(msg, socket)
 
         }
 
