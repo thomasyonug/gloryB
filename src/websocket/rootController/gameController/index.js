@@ -4,6 +4,9 @@ const Entity    = require('../entity')
 
 const arrengement = require('./arrengement')
 const glory       = require('./glory')
+const transfer    = require('./transfer')
+
+
 module.exports = 
     @classMeta
     class GameController extends Entity{
@@ -16,7 +19,8 @@ module.exports =
                 game,
                 io,
                 ...arrengement,
-                ...glory
+                ...glory,
+                ...transfer
             })
         }
 
@@ -36,15 +40,6 @@ module.exports =
 
             this.glory_initAll(msg, socket)
 
-        }
-
-
-
-
-        transfer (msg, socket) {
-            const {
-                room
-            } = socket.glory
         }
 
 
