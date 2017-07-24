@@ -7,7 +7,7 @@ module.exports = class Entity {
     on ({type = null, content = null} = {}, socket) {
         const handler = this[type]
         if (!handler) { 
-            throw new Error('room msg.type can\'t be empty')
+            throw new Error(`${type} handler can\'t be empty`)
             return false
         } else {
             handler.call(this, content, socket)
