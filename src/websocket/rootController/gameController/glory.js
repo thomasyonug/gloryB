@@ -18,8 +18,8 @@ async function _initStoreCards (msg, socket) {
     ])
 
     return {
-        hostCards: results[0].arrengement.cardGroups[0].cards,
-        guestCards: results[1].arrengement.cardGroups[0].cards
+        hostCards: results[0].arrengement.cardGroups.find(group => group.groupName === results[0].arrengement.usingGroup.groupName).cards,
+        guestCards: results[1].arrengement.cardGroups.find(group => group.groupName === results[1].arrengement.usingGroup.groupName).cards
     }
     // hostSocket.$emit('game', {
     //     type: 'glory_initStoreCards',
