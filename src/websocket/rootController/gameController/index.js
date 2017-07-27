@@ -24,7 +24,7 @@ module.exports =
             })
         }
 
-        start (msg, socket) {
+        async start (msg, socket) {
             const {
                 room,
                 userInfo
@@ -33,12 +33,13 @@ module.exports =
             if ((room.host !== socket) || !room.guests.size) return
 
 
+            await this.glory_initAll(msg, socket)
+
             //通知各方页面跳转
             this.io.to(room.roomID).emit('game', {
                 type: 'start'
             })
 
-            this.glory_initAll(msg, socket)
 
         }
 
