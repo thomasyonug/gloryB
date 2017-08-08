@@ -68,6 +68,16 @@ module.exports =
             }
         }
 
+        hostInfo (content, socket) {
+            try {
+                socket.$emit('room', {
+                    type: 'hostInfo',
+                    content: socket.glory.userInfo.nickname
+                })
+            } catch (err) {
+                emitError(socket)(err)
+            }
+        }
 
 
         roomChangeHandle (roomCore) {
