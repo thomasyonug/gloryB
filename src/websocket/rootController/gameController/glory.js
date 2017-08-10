@@ -74,7 +74,7 @@ async function glory_initAll (msg, socket) {
     const hostSocket  = room.host
     const guestSocket = room.guests.get(0)
 
-    
+    const seed = (Math.random() * 100000).toFixed(0) 
 
     hostSocket.$emit('game', {
         type: 'glory_initAll',
@@ -87,7 +87,8 @@ async function glory_initAll (msg, socket) {
             },
             initGodContent: {
                 content: {
-                    index: 'first'
+                    index: 'first',
+                    seed
                 }
             }
         }
@@ -104,7 +105,8 @@ async function glory_initAll (msg, socket) {
             },
             initGodContent: {
                 content: {
-                    index: 'second'
+                    index: 'second',
+                    seed
                 }
             }
         }
