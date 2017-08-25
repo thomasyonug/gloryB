@@ -76,6 +76,10 @@ module.exports =
                     rootController.chatController(msg, socket)
                 })
 
+                socket.on('friends', await rootController.friendsCtrler.createHandler(socket))
+
+
+
                 socket.on('disconnect', reason => {
                     rootController.metaController({
                         type: 'disconnect',

@@ -3,6 +3,7 @@ const RoomController = require('./roomController')
 const GameController = require('./gameController')
 const MetaController = require('./metaController')
 const ChatController = require('./chatController')
+const FriendsController = require('./friendsController')
 
 module.exports = 
     @classMeta
@@ -23,7 +24,8 @@ module.exports =
                 gameCtrler: new GameController({game, io}),
                 roomCtrler: new RoomController({room, io}),
                 metaCtrler: new MetaController({room, game, io}),
-                chatCtrler: new ChatController({room, io, game})
+                chatCtrler: new ChatController({room, io, game}),
+                friendsCtrler: new FriendsController({room, io})
             })
         } 
 
@@ -32,8 +34,6 @@ module.exports =
         connect (socket) {
             this.room.connect(socket)
         }
-
-
 
         roomController (msg, socket) {
             this.roomCtrler.on(msg, socket)
@@ -50,4 +50,9 @@ module.exports =
         chatController (msg, socket) {
             this.chatCtrler.on(msg, socket)
         }
+
+        FriendsController (msg, socket) {
+            this.friendsCtrler.on(msg, socket)
+        }
+
     }
