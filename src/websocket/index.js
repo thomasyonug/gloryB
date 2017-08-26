@@ -64,6 +64,7 @@ module.exports =
 
                 rootController.connect(socket)
 
+
                 socket.on('room', msg => {
                     rootController.roomController(msg, socket)
                 })
@@ -85,6 +86,9 @@ module.exports =
                         type: 'disconnect',
                         content: reason
                     }, socket)
+
+                    rootController.friendsCtrler.offlineTrigger(socket)
+
                 })
             })
         }

@@ -29,7 +29,7 @@ module.exports =
             }
         }
 
-        async addFriends (content, socket) {
+        async addFriend (content, socket) {
             const {
                 username
             } = content
