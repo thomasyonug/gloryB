@@ -3,12 +3,12 @@ const userModel = require('../models').userModel
 
 async function addFriend(_id, user) {
     const userObj = await userModel.findById(_id)
-    console.log(userObj.friends.includes(user))
-    if (userObj.friends.includes(user)) {
-        console.log("重复啦")
-    } else {
+    
+    if ( userObj.friends.find((item) => item.username == user.username) == undefined ) {
         userObj.friends.push(user)
         return userObj.save()
+    } else {
+        console.log("重复啦")
     } 
 }
 async function deleteFriend(_id, username) {
