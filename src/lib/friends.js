@@ -2,9 +2,14 @@ const userModel = require('../models').userModel
 
 
 async function addFriend(_id, user) {
-    const userObj = userModel.findById(_id)
-    userObj.friends.push(user)
-    return userObj.save()
+    const userObj = await userModel.findById(_id)
+    console.log(userObj.friends.includes(user))
+    if (userObj.friends.includes(user)) {
+        console.log("重复啦")
+    } else {
+        userObj.friends.push(user)
+        return userObj.save()
+    } 
 }
 async function deleteFriend(_id, username) {
     const user = userModel.findById(_id)
