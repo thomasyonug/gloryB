@@ -1,12 +1,15 @@
 const userModel = require('../models').userModel
 
 
-async function addFriend(_id, friend) {
-    const isFirend = await userModel.findOne({ _id: _id, 'friends.username': friend.username });
-    if (isFirend) {
-        return null;
-    }
-    return await userModel.update({ _id: _id }, { $push: { friends: friend } });
+async function addFriend(_id, user) {
+    const userObj = await userModel.findById(_id)
+    
+    if ( userObj.friends.find((item) => item.username == user.username) == undefined ) {
+        userObj.friends.push(user)
+        return userObj.save()
+    } else {
+        console.log("重复啦")
+    } 
 }
 async function deleteFriend(_id, username) {
     return await userModel.update({ _id: _id }, { $pull: { friends: { username: username } } });

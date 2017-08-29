@@ -28,5 +28,21 @@ module.exports =
             })
         }
 
+        friendMsg (content, socket) {
+            const {
+                username,
+                msg
+            } = content
 
+            const friendSocket = this.room.allSocketStore.get(username)
+
+            friendSocket.$emit('chat', {
+                type: 'friendMsg',
+                content: {
+                    msg,
+                    username
+                }
+            })
+
+        }
     }
