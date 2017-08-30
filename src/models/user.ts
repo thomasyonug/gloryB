@@ -1,4 +1,5 @@
 import * as mongoose from "mongoose"
+import * as mongodb from "mongodb"
 const Schema = mongoose.Schema
 
 
@@ -12,7 +13,13 @@ interface IUser extends mongoose.Document {
     password: string
     cardGroups: Array<CardGroup>
     usingGroup: string
-    create_date: Object
+    create_date: Date,
+    friends: Array<IFriend>
+}
+
+interface IFriend {
+    id: mongodb.ObjectID,
+    create_date: Date
 }
 
 const user = new Schema({
@@ -23,7 +30,11 @@ const user = new Schema({
         cards: [String]
     }],
     usingGroup: String,
-    create_date: Date
+    create_date: Date,
+    friends: [{
+        id: String,
+        create_date: Date
+    }]
 })
 
 const User = mongoose.model<IUser>('User', user)

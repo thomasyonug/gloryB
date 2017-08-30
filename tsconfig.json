@@ -10,5 +10,8 @@
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "experimentalDecorators": true //装饰器
-  }
+  },
+  "exclude": [
+    "node_modules"
+  ]
 }

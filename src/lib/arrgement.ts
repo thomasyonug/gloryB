@@ -23,10 +23,7 @@ async function updateCardGroup({username}: {username: string},
 
 async function deleteCardGroup (query:any) {
     const {_id, username}:{_id: string, username: string} = query
-
-    const user = await userModel.findOne({username}).exec()
-    user.cardGroups.pull({_id})
-    return user.save()
+    return userModel.update({username: username}, {$pull: {cardGroups: {_id: _id}}})
 }
 
 async function findCardGroup (query: Object) {
