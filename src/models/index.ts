@@ -1,5 +1,5 @@
 import * as mongoose from "mongoose"
-import * as userModel from "./user"
+import userModel from "./user"
 
 // mongoose.Promise = global.Promise
 

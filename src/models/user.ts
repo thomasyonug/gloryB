@@ -3,12 +3,12 @@ import * as mongodb from "mongodb"
 const Schema = mongoose.Schema
 
 
-interface CardGroup {
+export interface CardGroup {
     groupName: string
     cards: string[]
 }
 
-interface IUser extends mongoose.Document {
+export interface IUser extends mongoose.Document {
     username: string
     password: string
     cardGroups: Array<CardGroup>
@@ -17,7 +17,7 @@ interface IUser extends mongoose.Document {
     friends: Array<IFriend>
 }
 
-interface IFriend {
+export interface IFriend {
     id: mongodb.ObjectID,
     create_date: Date
 }
@@ -37,5 +37,4 @@ const user = new Schema({
     }]
 })
 
-const User = mongoose.model<IUser>('User', user)
-export = User 
+export default mongoose.model<IUser>('User', user)

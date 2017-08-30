@@ -1,6 +1,7 @@
 import {userModel} from "../models"
+import {IFriend} from '../models/user'
 
-async function addFriend(_id: any, friend:Object) {
+async function addFriend(_id: any, friend:IFriend) {
     const isFriend = await userModel.findOne({_id: _id, 'friends.username': friend.username})
     if (isFriend) {
         return null
