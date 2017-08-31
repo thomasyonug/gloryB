@@ -1,11 +1,11 @@
-import classMeta = require('../../decorators')
+// import classMeta = require('../../decorators')
 
-export = 
-@classMeta
-class Game {
-    io:any
+// export = 
+// @classMeta
+// class Game {
+//     io:any
 
-    constructor ({io}) {
-        Object.assign(this, {io})
-    }
-}
+//     constructor ({io}) {
+//         Object.assign(this, {io})
+//     }
+// }

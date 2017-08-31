@@ -1,5 +1,14 @@
-import * as chalk from "chalk"
+import helper from './helper'
+// import log    from './log'
+// import config from './config'
+// import error  from './error'
+// import './ArrayExtend'
+// import './SetExtend'
 
-export default (color: any, content: any) => {
-    console.log(chalk[color](content))
+export {
+    helper
+}
+
+export default {
+    helper
 }

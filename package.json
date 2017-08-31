@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./src/index.js --exec babel-node",
-    "build": "babel src -d dist && cp -r ./src/middleware ./dist",
+    "dev": "tsc -w & nodemon dist/index.js ",
+    "build": "npm run clean & tsc",
     "serve": "node dist/index.js",
-    "test": "mocha ./test"
+    "clean": "rm -rf ./dist"
   },
   "author": "article",
   "license": "ISC",

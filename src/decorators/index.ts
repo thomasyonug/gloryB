@@ -1,5 +1,5 @@
 
 
-export = (target, name, descriptor) {
-    return class extends target {}
-}
+// export = (target, name, descriptor) {
+//     return class extends target {}
+// }
