@@ -11,10 +11,10 @@ export interface CardGroup {
 export interface IUser extends mongoose.Document {
     username: string
     password: string
-    cardGroups: Array<CardGroup>
-    usingGroup: string
-    create_date: Date,
-    friends: Array<IFriend>
+    cardGroups?: Array<CardGroup>
+    usingGroup?: string
+    create_date?: Date,
+    friends?: Array<IFriend>
 }
 
 export interface IFriend {
