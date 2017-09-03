@@ -30,6 +30,7 @@ module.exports =
 
         async create (content, socket) {
             const {room} = await this.room.create(content, socket)
+            this.refreshOutsidePlayerRoomList()
         }
 
         async quit (content, socket) {
@@ -42,6 +43,8 @@ module.exports =
             socket.$emit('meta', {
                 type: 'quitRoomSuccess'
             })
+            this.refreshOutsidePlayerRoomList()
+
 
         }
 
@@ -52,6 +55,9 @@ module.exports =
                     type: 'roomList',
                     content: this.room.roomList() 
                 })
+
+                
+
             } catch (err) {
                 emitError(socket)(err)
             }
@@ -77,6 +83,12 @@ module.exports =
             } catch (err) {
                 emitError(socket)(err)
             }
+        }
+
+        refreshOutsidePlayerRoomList () {
+            this.room.outsideCore.store.forEach(socket => {
+                this.roomList({}, socket)
+            })
         }
 
 
