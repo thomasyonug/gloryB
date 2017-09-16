@@ -35,14 +35,24 @@ module.exports =
             } = content
 
             const friendSocket = this.room.allSocketStore.get(username)
+            const hostSocket = this.room.allSocketStore.get(socket.glory.userInfo.nickname)
 
             friendSocket.$emit('chat', {
                 type: 'friendMsg',
                 content: {
                     msg,
-                    username
+                    username: socket.glory.userInfo.nickname
                 }
             })
+
+            hostSocket.$emit('chat', {
+                type: 'friendMsg',
+                content: {
+                    msg,
+                    username: socket.glory.userInfo.nickname
+                }
+            })
+
 
         }
     }
